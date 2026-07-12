@@ -1,0 +1,15 @@
+#!/bin/bash
+set -a
+source .env
+set +a
+
+WP_CONTAINER=${SERVICE_NAME}-wordpress-1
+
+docker run -it --rm \
+    --volumes-from $WP_CONTAINER \
+    --network container:$WP_CONTAINER \
+    -e WORDPRESS_DB_HOST=$WORDPRESS_DB_HOST \
+    -e WORDPRESS_DB_USER=$WORDPRESS_DB_USER \
+    -e WORDPRESS_DB_PASSWORD=$WORDPRESS_DB_PASSWORD \
+    -e WORDPRESS_DB_NAME=$WORDPRESS_DB_NAME \
+    wordpress:cli-php8.4 "$@"
